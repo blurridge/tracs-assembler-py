@@ -1,5 +1,5 @@
 import os
-from assembler import assemble_to_c
+from assembler import assemble_to_c, write_to_txt
 
 DATA_PATH = "./data"
 
