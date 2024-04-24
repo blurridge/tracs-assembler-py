@@ -103,9 +103,9 @@ def get_instruction_operand_str(
         operand = opcode & 0xFF
     else:
         instruction = INSTRUCTION_TO_HEX[instruction]["opcode"]
-    instruction_str = f"ADDR=0x{address:X};BUS=0x{instruction:02X};MainMemory();"
+    instruction_str = f"ADDR=0x{address:02X};BUS=0x{instruction:02X};MainMemory();"
     address += 1
-    operand_str = f"ADDR=0x{address:X};BUS=0x{operand:02X};MainMemory();"
+    operand_str = f"ADDR=0x{address:02X};BUS=0x{operand:02X};MainMemory();"
     address += 1
     return (address, instruction_str, operand_str)
 
