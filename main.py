@@ -11,6 +11,8 @@ def main():
             assembled_lines = assemble_to_c(lines)
             if assembled_lines:
                 write_to_txt(filename, assembled_lines)
+            else:
+                print(f"[ERROR] Cancelling assembly for {filename}.")
 
 
 if __name__ == "__main__":

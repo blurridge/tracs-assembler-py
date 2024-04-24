@@ -43,9 +43,13 @@ def assemble_to_c(lines: list) -> list:
         branches = get_branches(starting_address, lines)
         for line in lines:
             words = clean_preprocessor_directives(line.split())
-            instruction = (
-                words[0] if words[0] in INSTRUCTION_TO_HEX.keys() else words[1]
-            )
+            if words[0] in INSTRUCTION_TO_HEX.keys():
+                instruction = words[0]
+            elif words[1] in INSTRUCTION_TO_HEX.keys():
+                instruction = words[1]
+            else:
+                print(f"[ERROR] Invalid instruction found in {line}.")
+                return []
             try:
                 operand = int(words[-1], 16) if words[-1] != instruction else 0x00
             except ValueError:
@@ -57,6 +61,7 @@ def assemble_to_c(lines: list) -> list:
             assembled_lines.append(operand_str)
         return assembled_lines
     else:
+        print(f"[ERROR] EOP not found.")
         return []
 
 
