@@ -54,6 +54,9 @@ def assemble_to_c(lines: list) -> list:
                 operand = int(words[-1], 16) if words[-1] != instruction else 0x00
             except ValueError:
                 operand = branches[words[-1]]
+            if not check_valid_address(instruction, operand):
+                print(f"[ERROR] Invalid address found for {instruction} -> {operand}.")
+                return []
             starting_address, instruction_str, operand_str = (
                 get_instruction_operand_str(starting_address, instruction, operand)
             )
@@ -162,3 +165,32 @@ def clean_preprocessor_directives(words: list) -> list:
     except ValueError:
         pass
     return words
+
+
+def check_valid_address(instruction: str, operand: int | str) -> bool:
+    """
+    Checks if the given operand is a valid memory address for the specified instruction.
+
+    The validity of the operand is determined based on the type of instruction:
+    - For 'WIO' and 'RIO' instructions, the operand must be an integer within the range 0x00 to 0x01F.
+    - For 'WM' and 'RM' instructions, the operand must be an integer within the range 0x400 to 0x7FF.
+    Other instruction types assume the operand is always valid, regardless of its value or type.
+
+    Parameters:
+        instruction (str): The instruction code that determines the required validation rules.
+        operand (int | str): The operand value that needs to be validated against the instruction.
+
+    Returns:
+        bool: True if the operand is valid for the given instruction, False otherwise.
+    """
+    if instruction == "WIO" or instruction == "RIO":
+        if isinstance(operand, int):
+            return operand <= 0x01F
+        else:
+            return False
+    elif instruction == "WM" or instruction == "RM":
+        if isinstance(operand, int):
+            return operand >= 0x400 and operand <= 0x7FF
+        else:
+            return False
+    return True

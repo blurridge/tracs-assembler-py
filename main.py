@@ -10,6 +10,7 @@ def main():
             lines = [line.rstrip("\n") for line in current_file if line is not None]
             assembled_lines = assemble_to_c(lines)
             if assembled_lines:
+                print(f"[SUCCESS] Succesfully assembled {filename}.")
                 write_to_txt(filename, assembled_lines)
             else:
                 print(f"[ERROR] Cancelling assembly for {filename}.")
